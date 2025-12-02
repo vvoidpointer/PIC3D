@@ -38,6 +38,7 @@ int main(int /* argc */, char* /* argv */[]) {
 
     // Initialize particles
     ParticleManager particleManager;
+    particleManager.setGridParameters(nx, ny, nz, grid.getDx(), grid.getDy(), grid.getDz());
     particleManager.initializeParticles(numParticles, Lx);
     std::cout << "Particles: " << particleManager.getNumParticles() << std::endl;
 

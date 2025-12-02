@@ -96,15 +96,20 @@ void Field::depositCharge(const std::vector<std::array<double, 3>>& positions,
         rho[idx] = 0.0;
     }
     
-    // Simple nearest-grid-point charge deposition
+    // Simple nearest-grid-point charge deposition with OpenMP
+    #pragma omp parallel for
     for (size_t p = 0; p < positions.size(); ++p) {
-        int i = static_cast<int>(positions[p][0] / dx) % nx;
-        int j = static_cast<int>(positions[p][1] / dy) % ny;
-        int k = static_cast<int>(positions[p][2] / dz) % nz;
+        // Convert position to grid indices with proper boundary handling
+        int i = static_cast<int>(std::floor(positions[p][0] / dx));
+        int j = static_cast<int>(std::floor(positions[p][1] / dy));
+        int k = static_cast<int>(std::floor(positions[p][2] / dz));
         
-        if (i >= 0 && i < nx && j >= 0 && j < ny && k >= 0 && k < nz) {
-            #pragma omp atomic
-            rho[index(i, j, k)] += charges[p] / (dx * dy * dz);
-        }
+        // Apply periodic boundary conditions (handles negative indices)
+        i = ((i % nx) + nx) % nx;
+        j = ((j % ny) + ny) % ny;
+        k = ((k % nz) + nz) % nz;
+        
+        #pragma omp atomic
+        rho[index(i, j, k)] += charges[p] / (dx * dy * dz);
     }
 }

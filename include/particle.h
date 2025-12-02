@@ -16,6 +16,7 @@ public:
     ParticleManager();
     ~ParticleManager();
 
+    void setGridParameters(int nx, int ny, int nz, double dx, double dy, double dz);
     void addParticle(const Particle& p);
     void initializeParticles(int numParticles, double boxSize);
     void updatePositions(double dt);
@@ -28,6 +29,10 @@ public:
 
 private:
     std::vector<Particle> particles;
+    int gridNx, gridNy, gridNz;
+    double gridDx, gridDy, gridDz;
+    
+    size_t getFieldIndex(double x, double y, double z) const;
 };
 
 #endif // PARTICLE_H
