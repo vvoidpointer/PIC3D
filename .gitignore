@@ -1,0 +1,31 @@
+# Build directory
+build/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Compiled files
+*.o
+*.obj
+*.exe
+pic3d
+
+# HDF5 output files
+*.h5
+*.hdf5
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+env/
+venv/
+*.egg-info/
+
+# OS files
+.DS_Store
+Thumbs.db
